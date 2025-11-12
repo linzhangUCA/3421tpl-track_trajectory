@@ -1,10 +1,6 @@
-# Naive Odometry
+# Track Robot's Trajectory
 
-## Objectives
-
-- Build a bare minimal odometry system.
-- Compare the robot's actual trajectory to its ideal trajectory.
-- Get familiar with [HomeR](https://github.com/linzhangUCA/homer)'s control system.
+We will set up a odometry system for our robot and track the travel history of it.
 
 ## Requirements
 
