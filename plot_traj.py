@@ -41,6 +41,12 @@ for i in range(len(meas_vels)):
 ref_x, ref_y, ref_th = [0], [0], [0]
 meas_x, meas_y, meas_th = [0], [0], [0]
 dt = 0.05  # seconds
+
+
+def update_pose(pose, vel, dt):
+    pass
+
+
 for i in range(len(meas_vels) - 1):
     ### START CODING HERE ### ~ 6 lines
     # Compute trajectory using reference velocities
@@ -62,7 +68,6 @@ for i in range(len(meas_vels) - 1):
     meas_th.append(meas_th[-1] + meas_dth)
 
 # Plot data
-# fig, ax = plt.subplots(1, 2, figsize=(16, 8))
 fig, ax = plt.subplots(1, 1, figsize=(12, 12))
 ref_u, ref_v = [], []
 meas_u, meas_v = [], []
