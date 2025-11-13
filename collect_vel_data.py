@@ -10,39 +10,38 @@ from math import pi
 # SETUP
 # Instantiate wheel
 bot = DiffDriveController(
-    left_ids=((2, 3, 4), (20, 21)), right_ids=((6, 7, 8), (10, 11))
+    left_wheel_ids=((15, 13, 14), (11, 10)),
+    right_wheel_ids=((16, 18, 17), (19, 20)),
 )
 # Create velocity candidates
 ref_vels = (
-    (0.5, 0.0),
-    (0.5, pi / 8),
     (0.4, 0.0),
-    (0.35, -pi / 4),
+    (0.4, pi / 3),
+    (0.3, 0.0),
+    (0.25, -pi / 2),
     (0.0, -2 * pi / 3),
-    (-0.35, -pi / 4),
+    (-0.25, -pi / 2),
+    (-0.3, 0.0),
+    (-0.4, pi / 3),
     (-0.4, 0.0),
-    (-0.5, pi / 8),
-    (-0.5, 0.0),
     (0.0, 2 * pi / 3),
 )
 # Create data storage
 vel_data = []
 
 # LOOP
-# sleep(1)  # get your robot ready!
-targ_vel = ref_vels[0]
-bot.set_vel(*targ_vel)
+# sleep(2)  # get your robot ready!
+bot.enable()
 for i in range(400):  # 20Hz controller, 20 seconds
-    if not (i + 1) % 40:
-        if i < 399:
-            targ_vel = ref_vels[int((i + 1) / 40)]
-        # print(targ_vel)
-        bot.set_vel(*targ_vel)
+    meas_lin_vel, meas_ang_vel = bot.get_vels()
+    print(meas_lin_vel, meas_ang_vel)
+    vel_data.append((meas_lin_vel, meas_ang_vel))
+    bot.set_vels(*ref_vels[i // 40])
     sleep(0.05)
-    # print(bot.lin_vel, bot.ang_vel)
-    vel_data.append((bot.lin_vel, bot.ang_vel))
 
-bot.set_vel(0.0, 0.0)
+bot.set_vels(0.0, 0.0)
+sleep(0.5)
+bot.disable()
 ### UNCOMMENT FOLLOWING 3 LINES WHEN SATISFIED WITH PID GAINS ###
 with open("vel_data.csv", "w") as file:
     for i in range(len(vel_data)):
