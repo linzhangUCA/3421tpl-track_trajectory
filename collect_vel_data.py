@@ -16,15 +16,15 @@ bot = DiffDriveController(
 # Create velocity candidates
 ref_vels = (
     (0.4, 0.0),
-    (0.4, pi / 3),
-    (0.3, 0.0),
-    (0.25, -pi / 2),
-    (0.0, -2 * pi / 3),
-    (-0.25, -pi / 2),
-    (-0.3, 0.0),
-    (-0.4, pi / 3),
-    (-0.4, 0.0),
+    (0.3, pi / 3),
+    (0.25, pi / 2),
     (0.0, 2 * pi / 3),
+    (-0.25, pi / 2),
+    (-0.3, pi / 3),
+    (-0.4, 0.0),
+    (-0.3, -pi / 3),
+    (-0.25, -pi / 2),
+    (0.0, -2 * pi / 3),
 )
 # Create data storage
 vel_data = []

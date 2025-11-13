@@ -1,17 +1,16 @@
 """
-Run this script with local Python (on RPi).
+Run this script with local Python
 """
 
-import sys
-import os
+from pathlib import Path
 import csv
 import matplotlib.pyplot as plt
 from math import pi, sin, cos
 
 # Extract data
-data_dir = os.path.join(sys.path[0], "data")
 ### START CODING HERE ### ~ 1 line
-data_file = os.path.join(data_dir, "example_data.csv")  # use your own data
+# data_file = os.path.join(data_dir, "example_data.csv")  # use your own data
+data_file = Path(__file__).parent / "data" / "vel_data.csv"
 ### END CODING HERE ###
 with open(data_file, newline="") as f:
     reader = csv.reader(f)
@@ -21,20 +20,20 @@ for vd in vel_data:
     real_vels.append((float(vd[0]), float(vd[1])))
 # Create target velocities
 ref_vels = (
-    (0.5, 0.0),
-    (0.5, pi / 8),
     (0.4, 0.0),
-    (0.35, -pi / 4),
-    (0.0, -2 * pi / 3),
-    (-0.35, -pi / 4),
-    (-0.4, 0.0),
-    (-0.5, pi / 8),
-    (-0.5, 0.0),
+    (0.3, pi / 3),
+    (0.25, pi / 2),
     (0.0, 2 * pi / 3),
+    (-0.25, pi / 2),
+    (-0.3, pi / 3),
+    (-0.4, 0.0),
+    (-0.3, -pi / 3),
+    (-0.25, -pi / 2),
+    (0.0, -2 * pi / 3),
 )
 targ_vels = []
 for i in range(len(real_vels)):
-    targ_vels.append(ref_vels[int(i / 40)])
+    targ_vels.append(ref_vels[i // 40])
 print(len(targ_vels))
 
 # Calculate trajectory
@@ -44,13 +43,13 @@ dt = 0.05  # seconds
 for i in range(len(targ_vels)):
     ### START CODING HERE ### ~ 6 lines
     # Compute ideal trajectory
-    dx = None
-    dy = None
-    dth = None
+    dx = targ_vels[i][0] * cos(th[-1]) * dt
+    dy = targ_vels[i][0] * sin(th[-1]) * dt
+    dth = targ_vels[i][1] * dt
     # Compute actual trajectory
-    dx_hat = None
-    dy_hat = None
-    dth_hat = None
+    dx_hat = real_vels[i][0] * cos(th_hat[-1]) * dt
+    dy_hat = real_vels[i][0] * sin(th_hat[-1]) * dt
+    dth_hat = real_vels[i][1] * dt
     ### END CODING HERE ###
     # Store ideal state
     x.append(x[-1] + dx)
@@ -68,8 +67,8 @@ ax[0].scatter(x, y)
 ax[0].scatter(x_hat, y_hat, marker="+")
 ax[0].set_xlabel("X (m)")
 ax[0].set_ylabel("Y (m)")
-ax[0].set_xlim([-0.25, 3.25])
-ax[0].set_ylim([-0.25, 3.25])
+# ax[0].set_xlim([-0.25, 3.25])
+# ax[0].set_ylim([-0.25, 3.25])
 ax[0].grid()
 ax[0].legend(["target", "actual"])
 # Plot orientation traj
@@ -80,8 +79,8 @@ ax[1].plot(ts, th, ".", markersize="10")
 ax[1].plot(ts, th_hat, "+", markersize="5")
 ax[1].set_xlabel("Time (s)")
 ax[1].set_ylabel("θ (radians)")
-ax[1].set_xlim([-0.25, 20.25])
-ax[1].set_ylim([-pi * 2.5, pi])
+# ax[1].set_xlim([-0.25, 20.25])
+# ax[1].set_ylim([-pi * 2.5, pi])
 ax[1].grid()
 ax[1].legend(["target", "actual"])
 # Title
