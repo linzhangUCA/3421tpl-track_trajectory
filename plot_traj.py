@@ -5,6 +5,8 @@ Run this script with local Python
 from pathlib import Path
 import csv
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+from matplotlib.collections import PatchCollection
 from math import pi, sin, cos
 
 # Extract measured velocities
@@ -39,7 +41,7 @@ for i in range(len(meas_vels)):
 ref_x, ref_y, ref_th = [0], [0], [0]
 meas_x, meas_y, meas_th = [0], [0], [0]
 dt = 0.05  # seconds
-for i in range(len(meas_vels)):
+for i in range(len(meas_vels) - 1):
     ### START CODING HERE ### ~ 6 lines
     # Compute trajectory using reference velocities
     ref_dx = ref_vels[i][0] * cos(ref_th[-1]) * dt
@@ -50,43 +52,57 @@ for i in range(len(meas_vels)):
     meas_dy = meas_vels[i][0] * sin(meas_th[-1]) * dt
     meas_dth = meas_vels[i][1] * dt
     ### END CODING HERE ###
-    # Store ref state
+    # Store reference pose
     ref_x.append(ref_x[-1] + ref_dx)
     ref_y.append(ref_y[-1] + ref_dy)
     ref_th.append(ref_th[-1] + ref_dth)
-    # Store measured state
+    # Store measured pose
     meas_x.append(meas_x[-1] + meas_dx)
     meas_y.append(meas_y[-1] + meas_dy)
     meas_th.append(meas_th[-1] + meas_dth)
 
 # Plot data
 # fig, ax = plt.subplots(1, 2, figsize=(16, 8))
-fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-# Plot position trajectory
-ax.scatter(ref_x, ref_y)
-ax.scatter(meas_x, meas_y, marker="+")
+fig, ax = plt.subplots(1, 1, figsize=(12, 12))
+ref_u, ref_v = [], []
+meas_u, meas_v = [], []
+for i in range(len(meas_vels)):
+    ref_u.append(cos(ref_th[i]))
+    ref_v.append(sin(ref_th[i]))
+    meas_u.append(cos(meas_th[i]))
+    meas_v.append(sin(meas_th[i]))
+ax.quiver(
+    ref_x,
+    ref_y,
+    ref_u,
+    ref_v,
+    color="#7C878E",  # Arrow color
+    label="Orientation",
+    angles="xy",  # Interpret (u, v) as (dx, dy)
+    scale_units="width",
+    width=0.002,
+)  # Arrow width
+ax.quiver(
+    meas_x,
+    meas_y,
+    meas_u,
+    meas_v,
+    color="#582c83",  # Arrow color
+    label="Orientation",
+    angles="xy",  # Interpret (u, v) as (dx, dy)
+    scale_units="width",
+    width=0.002,
+)  # Arrow width
 ax.set_xlabel("X (m)")
 ax.set_ylabel("Y (m)")
-# 0].set_xlim([-0.25, 3.25])
-# 0].set_ylim([-0.25, 3.25])
+ax.set_xlim(-0.1, 1.2)
+ax.set_ylim(-1.1, 0.8)
 ax.grid()
 ax.legend(["reference", "measured"])
-# # Plot orientation traj
-# ts = list(range(len(x)))  # create timestamps for x axis
-# for i in range(len(x)):
-#     ts[i] = 0.05 * i
-# ax[1].plot(ts, th, ".", markersize="10")
-# ax[1].plot(ts, th_hat, "+", markersize="5")
-# ax[1].set_xlabel("Time (s)")
-# ax[1].set_ylabel("θ (radians)")
-# # ax[1].set_xlim([-0.25, 20.25])
-# # ax[1].set_ylim([-pi * 2.5, pi])
-# ax[1].grid()
-# ax[1].legend(["target", "actual"])
-# # Title
-# ### CHOOSE APPROPRIATE TITLE ###
-# fig.suptitle("Trajectory Compare - Noload", fontsize=16)
-# plt.savefig("noload_traj.png")
-# # fig.suptitle("Trajectory Compare - Ground", fontsize=16)
-# # plt.savefig("ground_traj.png")
+# Title
+### CHOOSE APPROPRIATE TITLE ###
+ax.set_title("Trajectory Comparison - Noload", fontsize=16)
+plt.savefig("noload_traj.png")
+# fig.suptitle("Trajectory Comparison - Ground", fontsize=16)
+# plt.savefig("ground_traj.png")
 plt.show()
