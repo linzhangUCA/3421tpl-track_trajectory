@@ -9,7 +9,7 @@ from math import pi, sin, cos
 
 # SETUP, prepare data
 data_filename = "vel_data-noload.csv"
-data_type = "noload" if "noload" in data_filename else "ground"
+data_type = "lifted" if "lifted" in data_filename else "ground"
 
 data_file = Path(__file__).parent / "data" / data_filename
 with open(data_file, newline="") as f:
