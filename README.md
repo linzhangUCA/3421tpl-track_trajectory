@@ -26,6 +26,12 @@ Then delete the data file from the Pico.
 3. Rename the downloaded data file as "vel-data-**lifted**.csv" or "vel-data-**ground**.csv" depending on the data collection condition.
 Then, save the renamed data file under the [data/](data/) directory in this repository (on your computer/laptop).
 
+### 3. Plot Trajectory
+
+1. Select desired data file by modifying `data_filename` on line 11 in [plot_traj.py](plot_traj.py).
+2. Finish coding the `update_pose()` function from line 47 to 73 in [plot_traj.py](plot_traj.py).
+3. Run [plot_traj.py](plot_traj.py) using **Local Python** (on your computer/laptop).
+
 ## Requirements
 
 ### 1. (40%) Collect Velocity Data (Pico MicroPython)
