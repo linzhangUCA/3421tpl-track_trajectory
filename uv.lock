@@ -404,7 +404,7 @@ wheels = [
 ]
 
 [[package]]
-name = "track"
+name = "traj"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
