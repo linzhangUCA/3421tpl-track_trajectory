@@ -1,5 +1,5 @@
 """
-Run this script with local Python
+Run this script with Local Python
 """
 
 from pathlib import Path
