@@ -34,38 +34,24 @@ Then, save the renamed data file under the [data/](data/) directory in this repo
 
 ## Requirements
 
-### 1. (40%) Collect Velocity Data (Pico MicroPython)
+### 1. (70%) Coding
 
-Run [vel_data_collect.py](vel_data_collect.py) to drive your robot and collect data.
-Uncomment the last 3 lines, store the target and actual velocity data on your Pico.
+Complete `update_pose()` function from line 47 to 73 in [plot_traj.py](plot_traj.py).
 
-1. (20%) Lift the wheels and have a no-load test on the table. Collect data and upload the saved data to [data](/data/) directory.
-2. (20%) Put the robot down on the ground to test again. Collect data and upload the saved data to [data](/data/) directory.
+### 2. (30%) Evaluation
 
-### 2. (60%) Calculate Trajectories
-
-Complete [plot_traj.py](plot_traj.py).
-Tackle the following requests.
-
-1. (40%) Calculate the _ideal_ and _actual_ robot trajectories using the collected data.
-Code the sections wrapped between the following comments.
-
-```python
-### START CODING HERE ###
-
-### END CODING HERE ###
-```
+1. Evaluate position
 
 2. (20%) Plot the desktop and ground test trajectories and save them to the [images](images/) directory.
 Then reveal the uploaded trajectory images below.
 
-#### Noload Test Trajectory
+#### Lifted Trajectory
 
-![noload_traj](images/noload_traj.png)
+![lifted_traj](lifted_traj.png)
 
-#### Ground Test Trajectory
+#### Ground Trajectory
 
-![ground_traj](images/ground_traj.png)
+![ground_traj](ground_traj.png)
 
 ## Study Resrouces
 
