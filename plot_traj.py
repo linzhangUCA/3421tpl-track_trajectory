@@ -8,7 +8,9 @@ import matplotlib.pyplot as plt
 from math import pi, sin, cos
 
 # SETUP, prepare data
-data_filename = "vel_data.csv"  # change to "example_data.csv" to test your coding
+data_filename = "vel_data-noload.csv"
+data_type = "noload" if "noload" in data_filename else "ground"
+
 data_file = Path(__file__).parent / "data" / data_filename
 with open(data_file, newline="") as f:
     data = csv.reader(f)
@@ -53,70 +55,69 @@ def update_pose(x, y, theta, lin_vel, ang_vel, dt):
         next_y: robot's new Y coordinate (under the global frame)
         next_theta: robot's new orientation (angle between global frame's X-axis and body frame's x-axis)
     """
+    ### START CODING HERE ###
+    # Compute pose change
     delta_x = lin_vel * cos(theta) * dt
     delta_y = lin_vel * sin(theta) * dt
     delta_theta = ang_vel * dt
+    # Compute new pose
     next_x = x + delta_x
     next_y = y + delta_y
     next_theta = theta + delta_theta
+    ### END CODING HERE ###
+    if next_theta > pi:
+        next_theta = next_theta - 2 * pi
+    elif next_theta < -pi:
+        next_theta = next_theta + 2 * pi
 
     return next_x, next_y, next_theta
 
 
 # LOOP, calculate trajectory
-# ref_x, ref_y, ref_th = [0], [0], [0]
-# meas_x, meas_y, meas_th = [0], [0], [0]
-ref_pose = [(0, 0, 0)]
+ref_pose = [(0, 0, 0)]  # initialize pose
 meas_pose = [(0, 0, 0)]
-dt = 0.05  # seconds
+dt = 0.05  # seconds, refer to data collection
 
 for i in range(len(meas_vel_data) - 1):
-    # Compute trajectory using reference velocities
-    # x, y, th = ref_x[-1], ref_y[-1], ref_th[-1]
-    # lv, av = ref_vels[i][0], ref_vels[i][1]
-    # nx, ny, nth = update_pose(x, y, th, lv, av, dt)
-    ref_x, ref_y, ref_th = ref_pose[-1][0], ref_pose[-1][1], ref_pose[-1][2]
-    ref_lv, ref_av = ref_lin_vels[i], ref_ang_vels[i]
-    ref_nx, ref_ny, ref_nth = update_pose(ref_x, ref_y, ref_th, ref_lv, ref_av, dt)
-    ref_pose.append((ref_nx, ref_ny, ref_nth))
-    # Compute trajectory using measured vel
-    # meas_dx = meas_vels[i][0] * cos(meas_th[-1]) * dt
-    # meas_dy = meas_vels[i][0] * sin(meas_th[-1]) * dt
-    # meas_dth = meas_vels[i][1] * dt
+    # Compute new pose using reference velocity
+    ref_x, ref_y, ref_th = (
+        ref_pose[-1][0],
+        ref_pose[-1][1],
+        ref_pose[-1][2],
+    )  # extract latest coordinates
+    ref_lv, ref_av = (
+        ref_lin_vels[i],
+        ref_ang_vels[i],
+    )  # extract linear and angular velocity
+    ref_nx, ref_ny, ref_nth = update_pose(
+        ref_x, ref_y, ref_th, ref_lv, ref_av, dt
+    )  # compute new pose
+    ref_pose.append((ref_nx, ref_ny, ref_nth))  # store new pose
+    ### START CODING HERE ###
+    # Compute new pose using measured velocity
     meas_x, meas_y, meas_th = meas_pose[-1][0], meas_pose[-1][1], meas_pose[-1][2]
     meas_lv, meas_av = meas_lin_vels[i], meas_ang_vels[i]
+    ### END CODING HERE ###
     meas_nx, meas_ny, meas_nth = update_pose(
         meas_x, meas_y, meas_th, meas_lv, meas_av, dt
     )
-    meas_pose.append((meas_nx, meas_ny, meas_nth))
-    # Store reference pose
-    # ref_x.append(ref_x[-1] + ref_dx)
-    # ref_y.append(ref_y[-1] + ref_dy)
-    # ref_th.append(ref_th[-1] + ref_dth)
-    # ref_x.append(nx)
-    # ref_y.append(ny)
-    # ref_th.append(nth)
-    # Store measured pose
-    # meas_x.append(meas_x[-1] + meas_dx)
-    # meas_y.append(meas_y[-1] + meas_dy)
-    # meas_th.append(meas_th[-1] + meas_dth)
+    meas_pose.append((meas_nx, meas_ny, meas_nth))  # store new pose
 
 # Plot data
 fig, ax = plt.subplots(1, 1, figsize=(12, 12))
 ref_x, ref_y, ref_th = map(list, zip(*ref_pose))
 ref_u = [cos(rth) for rth in ref_th]
 ref_v = [sin(rth) for rth in ref_th]
+ref_uv = list(zip(ref_u, ref_v))
+ref_u_norm = [u / (u**2 + v**2) ** 0.5 for u, v in ref_uv]
+ref_v_norm = [v / (u**2 + v**2) ** 0.5 for u, v in ref_uv]
 meas_x, meas_y, meas_th = map(list, zip(*meas_pose))
 meas_u = [cos(mth) for mth in meas_th]
 meas_v = [sin(mth) for mth in meas_th]
+meas_uv = list(zip(meas_u, meas_v))
+meas_u_norm = [u / (u**2 + v**2) ** 0.5 for u, v in meas_uv]
+meas_v_norm = [v / (u**2 + v**2) ** 0.5 for u, v in meas_uv]
 
-# ref_u, ref_v = [], []
-# meas_u, meas_v = [], []
-# for i in range(len(meas_vels)):
-#     ref_u.append(cos(ref_th[i]))
-#     ref_v.append(sin(ref_th[i]))
-#     meas_u.append(cos(meas_th[i]))
-#     meas_v.append(sin(meas_th[i]))
 ax.quiver(
     ref_x,
     ref_y,
@@ -125,9 +126,11 @@ ax.quiver(
     color="#7C878E",  # Arrow color
     label="Orientation",
     angles="xy",  # Interpret (u, v) as (dx, dy)
+    units="xy",
+    scale=20,
     scale_units="width",
-    width=0.002,
-)  # Arrow width
+    width=0.003,
+)
 ax.quiver(
     meas_x,
     meas_y,
@@ -136,19 +139,17 @@ ax.quiver(
     color="#582c83",  # Arrow color
     label="Orientation",
     angles="xy",  # Interpret (u, v) as (dx, dy)
+    units="xy",
+    scale=20,
     scale_units="width",
-    width=0.002,
-)  # Arrow width
+    width=0.003,
+)
 ax.set_xlabel("X (m)")
 ax.set_ylabel("Y (m)")
 ax.set_xlim(-0.1, 1.2)
 ax.set_ylim(-1.1, 0.8)
 ax.grid()
 ax.legend(["reference", "measured"])
-# Title
-### CHOOSE APPROPRIATE TITLE ###
-ax.set_title("Trajectory Comparison - Noload", fontsize=16)
-# plt.savefig("noload_traj.png")
-# fig.suptitle("Trajectory Comparison - Ground", fontsize=16)
-# plt.savefig("ground_traj.png")
+ax.set_title(f"Trajectory Comparison - {data_type}", fontsize=16)
+plt.savefig(f"{data_type}_traj.png")  # Export figure
 plt.show()
