@@ -67,18 +67,24 @@ dt = 0.05  # seconds
 for i in range(len(meas_vels) - 1):
     ### START CODING HERE ### ~ 6 lines
     # Compute trajectory using reference velocities
-    ref_dx = ref_vels[i][0] * cos(ref_th[-1]) * dt
-    ref_dy = ref_vels[i][0] * sin(ref_th[-1]) * dt
-    ref_dth = ref_vels[i][1] * dt
+    # ref_dx = ref_vels[i][0] * cos(ref_th[-1]) * dt
+    # ref_dy = ref_vels[i][0] * sin(ref_th[-1]) * dt
+    # ref_dth = ref_vels[i][1] * dt
+    x, y, th = ref_x[-1], ref_y[-1], ref_th[-1]
+    lv, av = ref_vels[i][0], ref_vels[i][1]
+    nx, ny, nth = update_pose(x, y, th, lv, av, dt)
     # Compute trajectory using measured vel
     meas_dx = meas_vels[i][0] * cos(meas_th[-1]) * dt
     meas_dy = meas_vels[i][0] * sin(meas_th[-1]) * dt
     meas_dth = meas_vels[i][1] * dt
     ### END CODING HERE ###
     # Store reference pose
-    ref_x.append(ref_x[-1] + ref_dx)
-    ref_y.append(ref_y[-1] + ref_dy)
-    ref_th.append(ref_th[-1] + ref_dth)
+    # ref_x.append(ref_x[-1] + ref_dx)
+    # ref_y.append(ref_y[-1] + ref_dy)
+    # ref_th.append(ref_th[-1] + ref_dth)
+    ref_x.append(nx)
+    ref_y.append(ny)
+    ref_th.append(nth)
     # Store measured pose
     meas_x.append(meas_x[-1] + meas_dx)
     meas_y.append(meas_y[-1] + meas_dy)
