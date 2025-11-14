@@ -19,7 +19,7 @@ with open(data_file, newline="") as f:
 meas_vels = []
 for vd in vel_data:
     meas_vels.append((float(vd[0]), float(vd[1])))
-# Construct reference velocities
+# Construct reference velocity list
 targ_vels = (
     (0.4, 0.0),
     (0.3, pi / 3),
@@ -37,15 +37,32 @@ for i in range(len(meas_vels)):
     ref_vels.append(targ_vels[i // 40])
 # print(len(ref_vels))
 
+
+def update_pose(x, y, theta, lin_vel, ang_vel, dt):
+    """Compute robot's new pose given its old pose and velocity
+    Args:
+        x: robot's old X coordinate (under the global frame)
+        y: robot's old Y coordinate (under the global frame)
+        theta: robot's old orientation (angle from global X-axis to body frame's x-axis)
+    Returns:
+        next_x: robot's new X coordinate (under the global frame)
+        next_y: robot's new Y coordinate (under the global frame)
+        next_theta:
+    """
+    delta_x = lin_vel * cos(theta) * dt
+    delta_y = lin_vel * sin(theta) * dt
+    delta_theta = ang_vel * dt
+    next_x = x + delta_x
+    next_y = y + delta_y
+    next_theta = theta + delta_theta
+
+    return next_x, next_y, next_theta
+
+
 # Calculate trajectory
 ref_x, ref_y, ref_th = [0], [0], [0]
 meas_x, meas_y, meas_th = [0], [0], [0]
 dt = 0.05  # seconds
-
-
-def update_pose(pose, vel, dt):
-    pass
-
 
 for i in range(len(meas_vels) - 1):
     ### START CODING HERE ### ~ 6 lines
