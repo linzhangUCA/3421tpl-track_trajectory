@@ -2,6 +2,30 @@
 
 We will set up a odometry system for our robot and track the travel history of it.
 
+## Usage
+
+### 1. Software Setup
+
+1. Upload the MicroPython's differential drive control suite to your Pico.
+2. (Optional) Tweak `wheel_sep` in "diff_drive_controller.py".
+3. (Optional) Tune PID parameters for better controlling the wheels.
+
+> [!NOTE]
+>
+> - For Pico sitting on the PCB, find scripts in [r1b_control](https://github.com/linzhangUCA/r1b_control)
+> - For Pico sitting on the breadboard, find scripts in [3421example-motor_control](https://github.com/linzhangUCA/3421example-motor_control)
+
+### 2. Collect Data
+
+You need to collect data under two conditions: 1) with wheels lifted; 2) with robot set on the ground.
+
+1. Either lift the robot up or set it down on the ground.
+Then run [collect_vel_data.py](collect_vel_data.py) on Pico using **MicroPython(Raspberry Pi Pico)**
+2. Download the data saved on Pico ("vel_data.csv") to this repository on your computer/laptop.
+Then delete the data file from the Pico.
+3. Rename the downloaded data file as "vel-data-**lifted**.csv" or "vel-data-**ground**.csv" depending on the data collection condition.
+Then, save the renamed data file under the [data/](data/) directory in this repository (on your computer/laptop).
+
 ## Requirements
 
 ### 1. (40%) Collect Velocity Data (Pico MicroPython)
