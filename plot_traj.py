@@ -59,7 +59,7 @@ def update_pose(x, y, theta, lin_vel, ang_vel, dt):
     # Compute pose change
     delta_x = None
     delta_y = None
-    delta_theta = None * dt
+    delta_theta = None
     # Compute new pose
     next_x = None
     next_y = None
@@ -74,16 +74,16 @@ def update_pose(x, y, theta, lin_vel, ang_vel, dt):
 
 
 # LOOP, calculate trajectory
-ref_pose = [(0, 0, 0)]  # initialize pose
-meas_pose = [(0, 0, 0)]
-dt = 0.05  # seconds, refer to data collection
+ref_poses = [(0, 0, 0)]  # initialize list to store poses
+meas_poses = [(0, 0, 0)]
+dt = 0.05  # seconds, comply to data collection
 
 for i in range(len(meas_vel_data) - 1):
     # Compute new pose using reference velocity
     ref_x, ref_y, ref_th = (
-        ref_pose[-1][0],
-        ref_pose[-1][1],
-        ref_pose[-1][2],
+        ref_poses[-1][0],
+        ref_poses[-1][1],
+        ref_poses[-1][2],
     )  # extract latest coordinates
     ref_lv, ref_av = (
         ref_lin_vels[i],
@@ -92,7 +92,7 @@ for i in range(len(meas_vel_data) - 1):
     ref_nx, ref_ny, ref_nth = update_pose(
         ref_x, ref_y, ref_th, ref_lv, ref_av, dt
     )  # compute new pose
-    ref_pose.append((ref_nx, ref_ny, ref_nth))  # store new pose
+    ref_poses.append((ref_nx, ref_ny, ref_nth))  # store new pose
     ### START CODING HERE ###
     # Compute new pose using measured velocity
     meas_x, meas_y, meas_th = None, None, None
@@ -101,20 +101,27 @@ for i in range(len(meas_vel_data) - 1):
     meas_nx, meas_ny, meas_nth = update_pose(
         meas_x, meas_y, meas_th, meas_lv, meas_av, dt
     )
-    meas_pose.append((meas_nx, meas_ny, meas_nth))  # store new pose
+    meas_poses.append((meas_nx, meas_ny, meas_nth))  # store new pose
+
+# EVALUATION
+pose_errors = []
+for i in range(len(ref_poses)):
+    pose_errors.append(
+        (ref_poses[i][0] - meas_poses[i][0]) ** 2
+        + (ref_poses[i][1] - meas_poses[i][1]) ** 2
+        + (ref_poses[i][2] - meas_poses[i][2]) ** 2
+    )
+mse = sum(pose_errors) / len(pose_errors)
+print(f"Mean squared error: {sum(pose_errors) / len(pose_errors)}")
 
 # PLOT
 fig, ax = plt.subplots(1, 1, figsize=(12, 12))
-ref_x, ref_y, ref_th = map(list, zip(*ref_pose))
+ref_x, ref_y, ref_th = map(list, zip(*ref_poses))
 ref_u = [cos(rth) for rth in ref_th]
 ref_v = [sin(rth) for rth in ref_th]
-ref_uv = list(zip(ref_u, ref_v))
-meas_x, meas_y, meas_th = map(list, zip(*meas_pose))
+meas_x, meas_y, meas_th = map(list, zip(*meas_poses))
 meas_u = [cos(mth) for mth in meas_th]
 meas_v = [sin(mth) for mth in meas_th]
-meas_uv = list(zip(meas_u, meas_v))
-meas_u_norm = [u / (u**2 + v**2) ** 0.5 for u, v in meas_uv]
-meas_v_norm = [v / (u**2 + v**2) ** 0.5 for u, v in meas_uv]
 
 ax.quiver(
     ref_x,
@@ -144,21 +151,10 @@ ax.quiver(
 )
 ax.set_xlabel("X (m)")
 ax.set_ylabel("Y (m)")
-ax.set_xlim(-0.1, 1.2)
-ax.set_ylim(-1.1, 0.8)
+# ax.set_xlim(-0.1, 1.2)
+# ax.set_ylim(-1.1, 0.8)
 ax.grid()
 ax.legend(["reference", "measured"])
 ax.set_title(f"Trajectory Comparison - {data_type}", fontsize=16)
 plt.savefig(f"{data_type}_traj.png")  # Export figure
 plt.show()
-
-# EVALUATION
-pose_errors = []
-for i in range(len(ref_pose)):
-    pose_errors.append(
-        (ref_pose[i][0] - meas_pose[i][0]) ** 2
-        + (ref_pose[i][1] - meas_pose[i][1]) ** 2
-        + (ref_pose[i][2] - meas_pose[i][2]) ** 2
-    )
-mse = sum(pose_errors) / len(pose_errors)
-print(f"Mean squared error: {sum(pose_errors) / len(pose_errors)}")
