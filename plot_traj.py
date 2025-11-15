@@ -57,15 +57,15 @@ def update_pose(x, y, theta, lin_vel, ang_vel, dt):
     """
     ### START CODING HERE ###
     # Compute pose change
-    delta_x = lin_vel * cos(theta) * dt
-    delta_y = lin_vel * sin(theta) * dt
-    delta_theta = ang_vel * dt
+    delta_x = None
+    delta_y = None
+    delta_theta = None
     # Compute new pose
-    next_x = x + delta_x
-    next_y = y + delta_y
-    next_theta = theta + delta_theta
+    next_x = None
+    next_y = None
+    next_theta = None
     ### END CODING HERE ###
-    if next_theta > pi:
+    if next_theta > pi:  # restrict theta in [-pi, pi]
         next_theta = next_theta - 2 * pi
     elif next_theta < -pi:
         next_theta = next_theta + 2 * pi
@@ -95,8 +95,8 @@ for i in range(len(meas_vel_data) - 1):
     ref_pose.append((ref_nx, ref_ny, ref_nth))  # store new pose
     ### START CODING HERE ###
     # Compute new pose using measured velocity
-    meas_x, meas_y, meas_th = meas_pose[-1][0], meas_pose[-1][1], meas_pose[-1][2]
-    meas_lv, meas_av = meas_lin_vels[i], meas_ang_vels[i]
+    meas_x, meas_y, meas_th = None, None, None  # extract latest x, y, theta
+    meas_lv, meas_av = None, None  # extract linear and angular velocity
     ### END CODING HERE ###
     meas_nx, meas_ny, meas_nth = update_pose(
         meas_x, meas_y, meas_th, meas_lv, meas_av, dt

@@ -29,21 +29,23 @@ Then, save the renamed data file under the [data/](data/) directory in this repo
 ### 3. Plot Trajectory
 
 1. Select desired data file by modifying `data_filename` on line 11 in [plot_traj.py](plot_traj.py).
-2. Finish coding the `update_pose()` function from line 47 to 73 in [plot_traj.py](plot_traj.py).
+2. Finish coding in [plot_traj.py](plot_traj.py).
 3. Run [plot_traj.py](plot_traj.py) using **Local Python** (on your computer/laptop).
 
 ## Requirements
 
-### 1. (70%) Coding
+### 1. (70%) Plot Trajectories
 
-Complete `update_pose()` function from line 47 to 73 in [plot_traj.py](plot_traj.py).
+- Complete `update_pose()` function from line 59 to 66 in [plot_traj.py](plot_traj.py).
+Compute the robot's pose of the next instant given the robot's pose and velocity of the current instant.
+- Complete steps in line 98 and 99 of [plot_traj.py](plot_traj.py).
+Extract correct values to calculate the robot's trajectory using measured velocity data.
 
 ### 2. (30%) Evaluation
 
-1. Evaluate position
+1. Calculate mean squared error for positions.
 
-2. (20%) Plot the desktop and ground test trajectories and save them to the [images](images/) directory.
-Then reveal the uploaded trajectory images below.
+2. Calculate mean squared error for orientations.
 
 #### Lifted Trajectory
 
@@ -120,4 +122,4 @@ Y_{i+1} = Y_i + \Delta Y_i
 
 ## AI Policies
 
-Please acknowledge AI's contributions according to the policies in the [syllabus](https://linzhanguca.github.io/_docs/robotics2-2025/syllabus.pdf).
+Please acknowledge AI's contributions according to the policies in the syllabus.
