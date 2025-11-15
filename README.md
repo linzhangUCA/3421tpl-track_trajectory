@@ -41,11 +41,17 @@ Compute the robot's pose of the next instant given the robot's pose and velocity
 - Complete steps in line 98 and 99 of [plot_traj.py](plot_traj.py).
 Extract correct values to calculate the robot's trajectory using measured velocity data.
 
-### 2. (30%) Evaluation
+### 2. (30%) Evaluation and Observation
 
-1. Calculate mean squared error for positions.
+1. Evaluate measured trajectory by comparing it to the reference trajectory using the Mean Squared Error (MSE) metric.
 
-2. Calculate mean squared error for orientations.
+$$MSE = \frac{1}{M} \Sum_{i=0}^T (\mathbf{p} - \hat{\mathbf{p}})^2$$
+
+2. Observe the measured and reference trajectories, summarize the difference below. :point_down:
+
+3. The robot's odometry system is solely based on the encoders now.
+Are they sufficient to track the robot's pose? Why or why not?
+Please write your answers down below. :point_down:
 
 #### Lifted Trajectory
 
