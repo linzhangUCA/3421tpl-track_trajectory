@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from math import pi, sin, cos
 
 # SETUP, prepare data
-data_filename = "vel_data-noload.csv"
+data_filename = "example_data-lifted.csv"
 data_type = "lifted" if "lifted" in data_filename else "ground"
 
 data_file = Path(__file__).parent / "data" / data_filename
@@ -59,7 +59,7 @@ def update_pose(x, y, theta, lin_vel, ang_vel, dt):
     # Compute pose change
     delta_x = None
     delta_y = None
-    delta_theta = None
+    delta_theta = None * dt
     # Compute new pose
     next_x = None
     next_y = None
@@ -95,22 +95,20 @@ for i in range(len(meas_vel_data) - 1):
     ref_pose.append((ref_nx, ref_ny, ref_nth))  # store new pose
     ### START CODING HERE ###
     # Compute new pose using measured velocity
-    meas_x, meas_y, meas_th = None, None, None  # extract latest x, y, theta
-    meas_lv, meas_av = None, None  # extract linear and angular velocity
+    meas_x, meas_y, meas_th = None, None, None
+    meas_lv, meas_av = None, None
     ### END CODING HERE ###
     meas_nx, meas_ny, meas_nth = update_pose(
         meas_x, meas_y, meas_th, meas_lv, meas_av, dt
     )
     meas_pose.append((meas_nx, meas_ny, meas_nth))  # store new pose
 
-# Plot data
+# PLOT
 fig, ax = plt.subplots(1, 1, figsize=(12, 12))
 ref_x, ref_y, ref_th = map(list, zip(*ref_pose))
 ref_u = [cos(rth) for rth in ref_th]
 ref_v = [sin(rth) for rth in ref_th]
 ref_uv = list(zip(ref_u, ref_v))
-ref_u_norm = [u / (u**2 + v**2) ** 0.5 for u, v in ref_uv]
-ref_v_norm = [v / (u**2 + v**2) ** 0.5 for u, v in ref_uv]
 meas_x, meas_y, meas_th = map(list, zip(*meas_pose))
 meas_u = [cos(mth) for mth in meas_th]
 meas_v = [sin(mth) for mth in meas_th]
@@ -153,3 +151,14 @@ ax.legend(["reference", "measured"])
 ax.set_title(f"Trajectory Comparison - {data_type}", fontsize=16)
 plt.savefig(f"{data_type}_traj.png")  # Export figure
 plt.show()
+
+# EVALUATION
+pose_errors = []
+for i in range(len(ref_pose)):
+    pose_errors.append(
+        (ref_pose[i][0] - meas_pose[i][0]) ** 2
+        + (ref_pose[i][1] - meas_pose[i][1]) ** 2
+        + (ref_pose[i][2] - meas_pose[i][2]) ** 2
+    )
+mse = sum(pose_errors) / len(pose_errors)
+print(f"Mean squared error: {sum(pose_errors) / len(pose_errors)}")
