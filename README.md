@@ -69,7 +69,7 @@ Extract correct values to calculate the robot's trajectory using measured veloci
 
 ### 2. (20%) Observe and Analyze
 
-Evaluate measured trajectory by comparing it to the reference trajectory using the Mean Squared Error (MSE) metric (line 106 to 115 in [plot_traj.py](plot_traj.py).
+Evaluate measured trajectory by comparing it to the reference trajectory using the Mean Squared Error (MSE) metric (line 106 to 115 in [plot_traj.py](plot_traj.py)).
 
 $$MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2$$
 
