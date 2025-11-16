@@ -2,7 +2,7 @@
 
 We will set up a odometry system for our robot and track the travel history of it.
 
-## Usage
+## Instructions
 
 ### 1. Software Setup
 
@@ -40,23 +40,10 @@ Then, save the renamed data file under the [data/](data/) directory in this repo
 Compute the robot's pose of the next instant given the robot's pose and velocity of the current instant.
 - Complete steps in line 98 and 99 of [plot_traj.py](plot_traj.py).
 Extract correct values to calculate the robot's trajectory using measured velocity data.
-
-### 2. (30%) Evaluation and Observation
-
-1. Evaluate measured trajectory by comparing it to the reference trajectory using the Mean Squared Error (MSE) metric.
-
-$$MSE = \frac{1}{M} \sum_{i=0}^T (\mathbf{p} - \hat{\mathbf{p}})^2$$
+- Plot [lifted_traj.png](lifted_traj.png) and [ground_traj.png](ground_traj.png) using the correct data files.
 
 > [!TIP]
-> Line 106 to 115 in [plot_traj.py](plot_traj.py).
-
-Please log your MSE below :point_down:
-
-2. Observe the measured and reference trajectories, summarize the difference below. :point_down:
-
-3. The robot's odometry system is solely based on the encoders now.
-Are they sufficient to track the robot's pose? Why or why not?
-Please write your answers down below. :point_down:
+> The trajectory image will be automatically rendered after running [plot_traj.py](plot_traj.py).
 
 #### Lifted Trajectory
 
@@ -66,16 +53,42 @@ Please write your answers down below. :point_down:
 
 ![ground_traj](ground_traj.png)
 
-## Study Resrouces
+### 2. (30%) Evaluation and Observation
 
-### Frame Setup
+Evaluate measured trajectory by comparing it to the reference trajectory using the Mean Squared Error (MSE) metric.
 
-#### Time Frame
+> [!TIP]
+> Line 106 to 115 in [plot_traj.py](plot_traj.py).
+
+$$MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2$$
+
+- $M$ is the total number of data samples (400).
+- $\mathbf{p}_t$ is the robot's reference pose vector at instant $t$, where $t \in {0, 1, 2, \dots, T}$.
+- $\hat{\mathbf{p}}_t$ is the robot's measured pose vector at instant $t$.
+
+Please log your MSE below :point_down:
+> MSE = ?
+
+2. Observe the measured and reference trajectories, summarize the difference below. :point_down:
+
+> Your observation is: ...
+
+3. The robot's odometry system is solely based on the encoders now.
+Are they sufficient to track the robot's pose? Why or why not?
+Please write your answers down below. :point_down:
+
+> Your answers and analyses are: ...
+
+## Study Resources
+
+### 1. Reference Frame Setup
+
+#### 1.1. Temporal Frame
 
 - The robot will start moving at the moment of $t_0$, and end the motion at the instant of $t_T$.
 - The robot's state will be examined every $\Delta t$ seconds, hence the $i$-th instant $t_i = t_{i-1} + \Delta t$ (where $`i \in \{ 1, 2, \dots, T \}`$).
 
-#### Space Frame
+#### 1.2. Spatial Frame
 
 - Body frame: $`\{x, y\}`$ is attached to the robot and will translate and rotate along the robot's movement.
 
@@ -85,7 +98,7 @@ The body frame's origin is sitting at the geometric center of the robot's base p
 
 The Global frame will be generated according to the initial pose of the robot. The $`\{X, Y\}`$ frame will overlap with the initial $`\{x, y\}`$ frame.
 
-### Robot's State of Motion
+### 2. Robot's State of Motion (Pose and Velocity)
 
 - The robot's motion will be restricted in the two dimensional $`\{X, Y\}`$ plane.
 - The robot's pose at the $i$-th instant can be represented as $(X_i, Y_i, \theta_i)$ referring to the global frame.
