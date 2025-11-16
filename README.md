@@ -39,22 +39,25 @@ Then, save the renamed data file under the [data/](data/) directory in this repo
 >    1. Select "Local Python" at bottom right corner.
 >    2. Go to "Tools" menu then select "Manage packages".
 >    3. Search Python package's/library's name, then "Install".
-> - If you are using [uv](https://github.com/astral-sh/uv):
+> - If you are using [uv](https://docs.astral.sh/uv/getting-started/installation/):
 >    1. Open a terminal/shell in this repository, then `uv sync`
 >    2. To execute a Python scripts: `uv run <script_name>.py`, e.g. `uv run plot_traj.py`.
 > - If you plan to install the libraries system wide: open a terminal/shell in this repository, then `pip install matplotlib pyqt6`
 
 ## Requirements
 
-### 1. (70%) Plot Trajectories
+### 1. (80%) Plot Trajectories
 
-- Complete `update_pose()` function from line 59 to 66 in [plot_traj.py](plot_traj.py).
+- (60%) Complete `update_pose()` function from line 59 to 66 in [plot_traj.py](plot_traj.py).
 Compute the robot's pose of the next instant given the robot's pose and velocity of the current instant.
-- Complete steps in line 98 and 99 of [plot_traj.py](plot_traj.py).
+- (20%) Complete steps in line 98 and 99 of [plot_traj.py](plot_traj.py).
 Extract correct values to calculate the robot's trajectory using measured velocity data.
-- Plot [lifted_traj.png](lifted_traj.png) and [ground_traj.png](ground_traj.png) using the correct data files.
 
-> [!TIP] The trajectory image will be automatically rendered after running [plot_traj.py](plot_traj.py).
+> [!IMPORTANT]
+> Using correct data to redeem coding points.
+
+> [!TIP]
+> The trajectory image will be automatically rendered after running [plot_traj.py](plot_traj.py).
 
 #### Lifted Trajectory
 
@@ -64,7 +67,7 @@ Extract correct values to calculate the robot's trajectory using measured veloci
 
 ![ground_traj](ground_traj.png)
 
-### 2. (30%) Evaluation and Observation
+### 2. (20%) Observe and Analyze
 
 Evaluate measured trajectory by comparing it to the reference trajectory using the Mean Squared Error (MSE) metric.
 
@@ -78,13 +81,11 @@ $$MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2$$
 - $\hat{\mathbf{p}}_t$ is the robot's measured pose vector at instant $t$.
 
 Please log your MSE below :point_down:
-> MSE = ?
+> $MSE_{lifted} = ?$
 
-2. Observe the measured and reference trajectories, summarize the difference below. :point_down:
+> $MSE_{ground} = ?$
 
-> Your observation is: ...
-
-3. The robot's odometry system is solely based on the encoders now.
+2. The robot's odometry system is solely based on the encoders now.
 Are they sufficient to track the robot's pose? Why or why not?
 Please write your answers down below. :point_down:
 
