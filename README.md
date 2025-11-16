@@ -32,6 +32,18 @@ Then, save the renamed data file under the [data/](data/) directory in this repo
 2. Finish coding in [plot_traj.py](plot_traj.py).
 3. Run [plot_traj.py](plot_traj.py) using **Local Python** (on your computer/laptop).
 
+> [!TIP]
+> You will need [Matplotlib](https://matplotlib.org/stable/) and possibly [PyQt6](https://pypi.org/project/PyQt6/) to plot the trajectories.
+>
+> - If you are using Thonny:
+>    1. Select "Local Python" at bottom right corner.
+>    2. Go to "Tools" menu then select "Manage packages".
+>    3. Search Python package's/library's name, then "Install".
+> - If you are using [uv](https://github.com/astral-sh/uv):
+>    1. Open a terminal/shell in this repository, then `uv sync`
+>    2. To execute a Python scripts: `uv run <script_name>.py`, e.g. `uv run plot_traj.py`.
+> - If you plan to install the libraries system wide: open a terminal/shell in this repository, then `pip install matplotlib pyqt6`
+
 ## Requirements
 
 ### 1. (70%) Plot Trajectories
@@ -42,8 +54,7 @@ Compute the robot's pose of the next instant given the robot's pose and velocity
 Extract correct values to calculate the robot's trajectory using measured velocity data.
 - Plot [lifted_traj.png](lifted_traj.png) and [ground_traj.png](ground_traj.png) using the correct data files.
 
-> [!TIP]
-> The trajectory image will be automatically rendered after running [plot_traj.py](plot_traj.py).
+> [!TIP] The trajectory image will be automatically rendered after running [plot_traj.py](plot_traj.py).
 
 #### Lifted Trajectory
 
