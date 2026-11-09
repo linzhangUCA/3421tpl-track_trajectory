@@ -3,21 +3,18 @@
 ## 1. Overview
 An odometry system is extremely helpful for mobile robot to localize and keep in track with the travel history of it.
 
-## 2. Requirements
-
-### 1. Software Setup
-
+### 1.1. Software Setup
 1. Upload the MicroPython's differential drive control suite to your Pico.
 2. (Optional) Tweak `wheel_sep` in "diff_drive_controller.py".
 3. (Optional) Tune PID parameters for better controlling the wheels.
 
-> [!NOTE]
->
-> - For Pico sitting on the PCB, find scripts in [r1b_control](https://github.com/linzhangUCA/r1b_control)
-> - For Pico sitting on the breadboard, find scripts in [3421example-motor_control](https://github.com/linzhangUCA/3421example-motor_control)
+## 2. Requirements
 
-### 2. Collect Data
+### 2.1. Plan the Travel
+- Given the trace and 8 broken-down segments as shown in the graph, plan robot's velocity (linear and angular) and time for each segment.
 
+### 2.2. Collect Data
+- Fill in your planned velocity and time in the data collection [script](collect_vel_data.py) to record the robot's velocity during the travel. 
 You need to collect data under two conditions: 1) with wheels lifted; 2) with robot set on the ground.
 
 1. Either lift the robot up or set it down on the ground.
@@ -27,7 +24,7 @@ Then delete the data file from the Pico.
 3. Rename the downloaded data file as "vel-data-**lifted**.csv" or "vel-data-**ground**.csv" depending on the data collection condition.
 Then, save the renamed data file under the [data/](data/) directory in this repository (on your computer/laptop).
 
-### 3. Plot Trajectory
+### 2.3. Plot Trajectory
 
 1. Select desired data file by modifying `data_filename` on line 11 in [plot_traj.py](plot_traj.py).
 2. Finish coding in [plot_traj.py](plot_traj.py).
@@ -44,10 +41,6 @@ Then, save the renamed data file under the [data/](data/) directory in this repo
 >    1. Open a terminal/shell in this repository, then `uv sync`
 >    2. To execute a Python scripts: `uv run <script_name>.py`, e.g. `uv run plot_traj.py`.
 > - If you plan to install the libraries system wide: open a terminal/shell in this repository, then `pip install matplotlib pyqt6`
-
-## Requirements
-
-### 1. (80%) Plot Trajectories
 
 - (60%) Complete `update_pose()` function from line 59 to 66 in [plot_traj.py](plot_traj.py).
 Compute the robot's pose of the next instant given the robot's pose and velocity of the current instant.
