@@ -31,34 +31,11 @@ Describe how you design the velocities and the durations in the [README](README.
 
 ### 2.3. Estimate Trajectory
 - Fill in correct code in [plot_traj.py](plot_traj.py) to estimate robot's pose at every step.
-- Run [plot_traj.py](plot_traj.py) using **Local Python** (on your computer/laptop).
+- Run [plot_traj.py](plot_traj.py) (using **Local Python**) and upload the figure to the [images/](./images/) directory of the assignment repository.
 
-> [!NOTE]
-> - Use **Local Python** (on your computer/laptop) to run [trajectory plotting](plot_traj.py) code.
-> - You will need [Matplotlib](https://matplotlib.org/stable/) and possibly [PyQt6](https://pypi.org/project/PyQt6/) to plot the trajectories.
+### 2.4. (20%) Observe and Analyze
 
-- (20%) Complete `update_pose()` function from line 59 to 66 in [plot_traj.py](plot_traj.py).
-Compute the robot's pose of the next instant given the robot's pose and velocity of the current instant.
-- (20%) Complete steps in line 98 and 99 of [plot_traj.py](plot_traj.py).
-Extract correct values to calculate the robot's trajectory using measured velocity data.
-
-> [!IMPORTANT]
-> Using correct data to redeem coding points.
-
-> [!TIP]
-> The trajectory image will be automatically rendered after running [plot_traj.py](plot_traj.py).
-
-#### Lifted Trajectory
-
-![lifted_traj](lifted_traj.png)
-
-#### Ground Trajectory
-
-![ground_traj](ground_traj.png)
-
-### 2. (20%) Observe and Analyze
-
-Evaluate measured trajectory by comparing it to the reference trajectory using the Mean Squared Error (MSE) metric (line 106 to 115 in [plot_traj.py](plot_traj.py)).
+Evaluate measured trajectory by comparing it to the reference trajectory using the Mean Squared Error (MSE) metric
 
 $$MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2$$
 
@@ -66,27 +43,22 @@ $$MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2$$
 - $\mathbf{p}_t$ is the robot's reference pose vector at instant $t$, where $t \in \{0, 1, 2, \dots, T\}$.
 - $\hat{\mathbf{p}}_t$ is the robot's measured pose vector at instant $t$.
 
-Please log your MSE below :point_down:
-> $MSE_{lifted} = ?$
-
-> $MSE_{ground} = ?$
-
-2. The robot's odometry system is solely based on the encoders now.
+The robot's odometry system is solely based on the encoders now.
 Are they sufficient to track the robot's pose? Why or why not?
-Please write your answers down below. :point_down:
 
-> Your answers and analyses are: ...
+### 2.5. Acknowledge AI's Contributions
+If AI helped with this assignment, please list out all the contributions from it.
 
-## Study Resources
+## 3. Study Resources
 
-### 1. Reference Frame Setup
+### 3.1. Reference Frame Setup
 
-#### 1.1. Temporal Frame
+#### 3.1.1. Temporal Frame
 
 - The robot will start moving at the moment of $t_0$, and end the motion at the instant of $t_T$.
 - The robot's state will be examined every $\Delta t$ seconds, hence the $i$-th instant $t_i = t_{i-1} + \Delta t$ (where $`i \in \{ 1, 2, \dots, T \}`$).
 
-#### 1.2. Spatial Frame
+#### 3.1.2. Spatial Frame
 
 - Body frame: $`\{x, y\}`$ is attached to the robot and will translate and rotate along the robot's movement.
 
@@ -96,7 +68,7 @@ The body frame's origin is sitting at the geometric center of the robot's base p
 
 The Global frame will be generated according to the initial pose of the robot. The $`\{X, Y\}`$ frame will overlap with the initial $`\{x, y\}`$ frame.
 
-### 2. Robot's State of Motion (Pose and Velocity)
+### 3.2. Robot's State of Motion (Pose and Velocity)
 
 - The robot's motion will be restricted in the two dimensional $`\{X, Y\}`$ plane.
 - The robot's pose at the $i$-th instant can be represented as $(X_i, Y_i, \theta_i)$ referring to the global frame.
@@ -142,6 +114,3 @@ Y_{i+1} = Y_i + \Delta Y_i
 \theta_{i+1} = \theta_i + \Delta \theta_i
 ```
 
-## AI Policies
-
-Please acknowledge AI's contributions according to the policies in the syllabus.
