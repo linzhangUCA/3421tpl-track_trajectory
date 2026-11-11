@@ -1,19 +1,21 @@
 # Track Robot's Trajectory
 
 ## 1. Overview
+It is important for any mobile robot to move along the pre-planned trajectory while localizie itself.
+In this assignment, you will practice controling the robot's motion by feeding velocity commands to it. 
 
-
-### 1.1. Software Setup
-1. Set up the differential drive control suite on the Pico.
-2. (Optional) Tweak `wheel_sep` in "diff_drive_controller.py".
-3. (Optional) Tune PID parameters for better controlling the wheels.
-4. (Optional, [VSCode](https://code.visualstudio.com/) recommended) Configure Python environment for the trajectory plotting code:
-    1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/):
+### Preparation
+1. Set up the differential drive mobile base.
+   1. (Recommended) Install the mobile robot [software stack](https://github.com/linzhangUCA/upython_mobile_robot/tree/main/src/upyton_mobile_robot) .
+   2. Update properties according to your robot's physical setup.
+   3. Tune PID parameters so the robot will quickly and smoothly respond to the velocity commands.
+2. (Optional, [VSCode](https://code.visualstudio.com/) recommended) Configure Python environment for the trajectory plotting code:
+    1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) on your computer.
     2. Open a terminal/shell in the local assignment repository, then `uv sync` to install dependency Python packages ([Matplotlib](https://matplotlib.org/stable/) and possibly [PyQt6](https://pypi.org/project/PyQt6/)).
     3. To execute a Python scripts: `uv run <script_name>.py`, e.g. `uv run plot_traj.py`.
 
 ## 2. Requirements
-The robot will be automatically travelling to trace the track (indicated by the dashed lines) as shown in the figure.
+The robot will be automatically tracing the track (indicated by the dashed lines) as shown in the figure.
 ![track_traj](./images/track_traj.png)
 
 ### 2.1. Plan the Travel
@@ -83,20 +85,20 @@ $\omega_i$ is positive if the direction is counterclockwise.
 \{(X_0, Y_0, \theta_0, v_0, \omega_0), (X_1, Y_1, \theta_1, v_1, \omega_1), \dots, (X_T, Y_T, \theta_T, v_T, \omega_T)\}
 ```
 
-![odom_frame](images/odom_frame.png)
+![odometry](images/odometry.png)
 
 At instant $t_i$, the change of the robot's pose can be calculated _approximately_ as:
 
 ```math
-\Delta X_i = v_i \cos \theta_i \Delta t
+\Delta X_i \approx v_i \cos \theta_i \Delta t
 ```
 
 ```math
-\Delta Y_i = v_i \sin \theta_i \Delta t
+\Delta Y_i \approx v_i \sin \theta_i \Delta t
 ```
 
 ```math
-\Delta \theta_i = \omega_i \Delta t
+\Delta \theta_i \approx \omega_i \Delta t
 
 ```
 
