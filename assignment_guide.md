@@ -4,14 +4,20 @@
 An odometry system is extremely helpful for mobile robot to localize and keep in track with the travel history of it.
 
 ### 1.1. Software Setup
-1. Upload the MicroPython's differential drive control suite to your Pico.
+1. Set up the differential drive control suite on the Pico.
 2. (Optional) Tweak `wheel_sep` in "diff_drive_controller.py".
 3. (Optional) Tune PID parameters for better controlling the wheels.
 
 ## 2. Requirements
+The robot will be automatically travelling to trace the track (indicated by the dashed lines) as shown in the figure.
+![track_traj](./images/track_traj.png)
 
 ### 2.1. Plan the Travel
-- Given the trace and 8 broken-down segments as shown in the graph, plan robot's velocity (linear and angular) and time for each segment.
+Given the track and 8 segments as shown in the graph, plan robot's velocity (linear and angular) and duration for each segment.
+Describe how you design the velocities and the durations in the [README](README.md). 
+- Identify correct equations to plan linear velocity for the robot.
+- Identify correct equations to plan angular velocity for the robot.
+- Identify correct equations to plan duration of the segment.
 
 ### 2.2. Collect Data
 - Fill in your planned velocity and time in the data collection [script](collect_vel_data.py) to record the robot's velocity during the travel. 
