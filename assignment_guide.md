@@ -15,8 +15,8 @@ In this assignment, you will practice controling the robot's motion by feeding v
     3. To execute a Python scripts: `uv run <script_name>.py`, e.g. `uv run plot_traj.py`.
 
 ## 2. Requirements
-The robot needs to be automatically tracing the track (indicated by the dashed lines) as shown in the figure below.
-The track is brokendown into 8 (color-coded) segments.
+The robot needs to be automatically tracking the pre-defined trajectory (indicated by the dashed lines) as shown in the figure below.
+The trajectory is broken down into 8 (color-coded) segments.
 In each segment, control the robot's movement by feeding linear and angular velocity command to it for a certain duration.
 
 ![track_traj](./images/track_traj.png)
@@ -35,7 +35,8 @@ Describe how to design the velocity command and the duration for every segment o
 - Run [track_traj.py](track_traj.py) script (on Pico using **MicroPython**) to track the trajectory and record the robot's motion data.
 - Upload the data file (saved in Pico as "vel_data.csv") to the [data/](./data/) directory of the assignment repository (locally and on Github).
 - Fill in correct code in [plot_traj.py](plot_traj.py) to estimate robot's pose at every step.
-- Run [plot_traj.py](plot_traj.py) (on a computer using **Local Python**) and upload the figure to the [images/](./images/) directory of the assignment repository.
+- Run [plot_traj.py](plot_traj.py) (on a computer using **Local Python**) to measure the actual trajectory.
+- Upload the trajectory figure to the [images/](./images/) directory of the assignment repository and display it out in the [README](README.md).
 
 > [!IMPORTANT]
 > - Modify code out of the designated sections is not recommended.
@@ -59,18 +60,20 @@ p=
 > [!CAUTION]
 > - You will need to demonstrate your robot to redeem credits for the plan and the implementation part.
 
-### 2.4. (20%) Observe and Analyze
+### 2.4. (20%) Evaluate Performance
+Evaluate and compare the measured trajectory to the reference trajectory using the Mean Squared Error (MSE) metric.
+Write code in [compute_mse.py](compute_mse.py) to compute the metric based on your data.
+Upload your code to the assignment repository and report your result in the [README](README.md).
 
-Evaluate measured trajectory by comparing it to the reference trajectory using the Mean Squared Error (MSE) metric
+```math
+MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2
+```
+   - $M$ is the total number of steps.
+   - $\mathbf{p}_t = [X_t, Y_t, \theta_t]$ is the robot's reference pose vector at instant $t$, where $t \in \{0, 1, 2, \dots, T\}$.
+   - $\hat{\mathbf{p}}_t$ is the robot's measured pose vector at instant $t$.
+> [!TIP]
+> - Write code to calculate the MSE.
 
-$$MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2$$
-
-- $M$ is the total number of data samples (400).
-- $\mathbf{p}_t$ is the robot's reference pose vector at instant $t$, where $t \in \{0, 1, 2, \dots, T\}$.
-- $\hat{\mathbf{p}}_t$ is the robot's measured pose vector at instant $t$.
-
-The robot's odometry system is solely based on the encoders now.
-Are they sufficient to track the robot's pose? Why or why not?
 
 ### 2.5. Acknowledge AI's Contributions
 If AI helped with this assignment, please list out all the contributions from it.
