@@ -1,12 +1,16 @@
 # Track Robot's Trajectory
 
 ## 1. Overview
-An odometry system is extremely helpful for mobile robot to localize and keep in track with the travel history of it.
+
 
 ### 1.1. Software Setup
 1. Set up the differential drive control suite on the Pico.
 2. (Optional) Tweak `wheel_sep` in "diff_drive_controller.py".
 3. (Optional) Tune PID parameters for better controlling the wheels.
+4. (Optional, [VSCode](https://code.visualstudio.com/) recommended) Configure Python environment for the trajectory plotting code:
+    1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/):
+    2. Open a terminal/shell in the local assignment repository, then `uv sync` to install dependency Python packages ([Matplotlib](https://matplotlib.org/stable/) and possibly [PyQt6](https://pypi.org/project/PyQt6/)).
+    3. To execute a Python scripts: `uv run <script_name>.py`, e.g. `uv run plot_traj.py`.
 
 ## 2. Requirements
 The robot will be automatically travelling to trace the track (indicated by the dashed lines) as shown in the figure.
@@ -20,35 +24,20 @@ Describe how you design the velocities and the durations in the [README](README.
 - Identify correct equations to plan duration of the segment.
 
 ### 2.2. Collect Data
-- Fill in your planned velocity and time in the data collection [script](collect_vel_data.py) to record the robot's velocity during the travel. 
-You need to collect data under two conditions: 1) with wheels lifted; 2) with robot set on the ground.
+- Fill in your planned velocity and duration in the data collection [script](collect_vel_data.py) to record the robot's motion data during the travel. 
+- Upload the data file (saved in Pico as "vel_data.csv") to the [data/](./data/) directory of the assignment repository.
+> [!WARNING]
+> Be ware of the storage space of your Pico board. 4 Mb maximum. 
 
-1. Either lift the robot up or set it down on the ground.
-Then run [collect_vel_data.py](collect_vel_data.py) on Pico using **MicroPython(Raspberry Pi Pico)**
-2. Download the data saved on Pico ("vel_data.csv") to this repository on your computer/laptop.
-Then delete the data file from the Pico.
-3. Rename the downloaded data file as "vel-data-**lifted**.csv" or "vel-data-**ground**.csv" depending on the data collection condition.
-Then, save the renamed data file under the [data/](data/) directory in this repository (on your computer/laptop).
+### 2.3. Estimate Trajectory
+- Fill in correct code in [plot_traj.py](plot_traj.py) to estimate robot's pose at every step.
+- Run [plot_traj.py](plot_traj.py) using **Local Python** (on your computer/laptop).
 
-### 2.3. Plot Trajectory
+> [!NOTE]
+> - Use **Local Python** (on your computer/laptop) to run [trajectory plotting](plot_traj.py) code.
+> - You will need [Matplotlib](https://matplotlib.org/stable/) and possibly [PyQt6](https://pypi.org/project/PyQt6/) to plot the trajectories.
 
-1. Select desired data file by modifying `data_filename` on line 11 in [plot_traj.py](plot_traj.py).
-2. Finish coding in [plot_traj.py](plot_traj.py).
-3. Run [plot_traj.py](plot_traj.py) using **Local Python** (on your computer/laptop).
-
-> [!TIP]
-> You will need [Matplotlib](https://matplotlib.org/stable/) and possibly [PyQt6](https://pypi.org/project/PyQt6/) to plot the trajectories.
->
-> - If you are using Thonny:
->    1. Select "Local Python" at bottom right corner.
->    2. Go to "Tools" menu then select "Manage packages".
->    3. Search Python package's/library's name, then "Install".
-> - If you are using [uv](https://docs.astral.sh/uv/getting-started/installation/):
->    1. Open a terminal/shell in this repository, then `uv sync`
->    2. To execute a Python scripts: `uv run <script_name>.py`, e.g. `uv run plot_traj.py`.
-> - If you plan to install the libraries system wide: open a terminal/shell in this repository, then `pip install matplotlib pyqt6`
-
-- (60%) Complete `update_pose()` function from line 59 to 66 in [plot_traj.py](plot_traj.py).
+- (20%) Complete `update_pose()` function from line 59 to 66 in [plot_traj.py](plot_traj.py).
 Compute the robot's pose of the next instant given the robot's pose and velocity of the current instant.
 - (20%) Complete steps in line 98 and 99 of [plot_traj.py](plot_traj.py).
 Extract correct values to calculate the robot's trajectory using measured velocity data.
