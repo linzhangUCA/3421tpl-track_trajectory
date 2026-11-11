@@ -18,6 +18,7 @@ In this assignment, you will practice controling the robot's motion by feeding v
 The robot needs to be automatically tracking the pre-defined trajectory (indicated by the dashed lines) as shown in the figure below.
 The trajectory is broken down into 8 (color-coded) segments.
 In each segment, control the robot's movement by feeding linear and angular velocity command to it for a certain duration.
+The total time for tracking needs to be restricted within 60 seconds (excluding the pauses at the checkpoints). 
 
 ![track_traj](./images/track_traj.png)
 
@@ -69,7 +70,7 @@ Upload your code to the assignment repository and report your result in the [REA
 MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2
 ```
    - $M$ is the total number of steps.
-   - $\mathbf{p}_t = [X_t, Y_t, \theta_t]$ is the robot's reference pose vector at instant $t$, where $t \in \{0, 1, 2, \dots, T\}$.
+   - $\mathbf{p}_t = [X_t, Y_t, \theta_t]$ is the robot's reference pose vector at instant $t$, where $`t \in \{ 0, 1, 2, \dots, T \}`$.
    - $\hat{\mathbf{p}}_t$ is the robot's measured pose vector at instant $t$.
 > [!TIP]
 > - Write code to calculate the MSE.
@@ -85,7 +86,7 @@ If AI helped with this assignment, please list out all the contributions from it
 #### 3.1.1. Temporal Frame
 
 - The robot will start moving at the moment of $t_0$, and end the motion at the instant of $t_T$.
-- The robot's state will be examined every $\Delta t$ seconds, hence the $i$-th instant $t_i = t_{i-1} + \Delta t$ (where $`i \in \{ 1, 2, \dots, T \}`$).
+- The robot's state will be examined every $\Delta t$ seconds, hence the $i$-th instant $t_i = t_{i-1} + \Delta t$ (where $`i \in \{ 0, 1, 2, \dots, T \}`$).
 
 #### 3.1.2. Spatial Frame
 
