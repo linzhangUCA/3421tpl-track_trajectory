@@ -15,25 +15,34 @@ In this assignment, you will practice controling the robot's motion by feeding v
     3. To execute a Python scripts: `uv run <script_name>.py`, e.g. `uv run plot_traj.py`.
 
 ## 2. Requirements
-The robot will be automatically tracing the track (indicated by the dashed lines) as shown in the figure.
+The robot needs to be automatically tracing the track (indicated by the dashed lines) as shown in the figure below.
+The track is brokendown into 8 (color-coded) segments.
+In each segment, control the robot's movement by feeding linear and angular velocity command to it for a certain duration.
+
 ![track_traj](./images/track_traj.png)
 
-### 2.1. Plan the Travel
-Given the track and 8 segments as shown in the graph, plan robot's velocity (linear and angular) and duration for each segment.
-Describe how you design the velocities and the durations in the [README](README.md). 
-- Identify correct equations to plan linear velocity for the robot.
-- Identify correct equations to plan angular velocity for the robot.
-- Identify correct equations to plan duration of the segment.
+### 2.1. Plan Trajectory Tracking
+Describe how to design the velocity command and the duration for every segment of the track in the [README](README.md). 
+- Identify equations and plug in numbers to plan linear velocity for the robot.
+- Identify equations and plug in numbers to plan angular velocity for the robot.
+- Identify equations and plug in numbers to plan duration of the segment.
 
-### 2.2. Collect Data
-- Fill in your planned velocity and duration in the data collection [script](collect_vel_data.py) to record the robot's motion data during the travel. 
-- Upload the data file (saved in Pico as "vel_data.csv") to the [data/](./data/) directory of the assignment repository.
-> [!WARNING]
-> Be ware of the storage space of your Pico board. 4 Mb maximum. 
+> [!IMPORTANT]
+> Please format mathmatical expressions following the [guide](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions). 
 
-### 2.3. Estimate Trajectory
+### 2.2. Implement Trajectory Tracking
+- Fill in your planned velocity commands and durations in the [track_traj.py](track_traj.py) script.
+- Run [track_traj.py](track_traj.py) script (on Pico using **MicroPython**) to record the robot's motion data during the tracking.
+- Upload the data file (saved in Pico as "vel_data.csv") to the [data/](./data/) directory of the assignment repository (locally and on Github).
 - Fill in correct code in [plot_traj.py](plot_traj.py) to estimate robot's pose at every step.
-- Run [plot_traj.py](plot_traj.py) (using **Local Python**) and upload the figure to the [images/](./images/) directory of the assignment repository.
+- Run [plot_traj.py](plot_traj.py) (on a computer using **Local Python**) and upload the figure to the [images/](./images/) directory of the assignment repository.
+
+> [!CAUTION]
+> - No demonstration, no credits. 
+> - Be ware of the storage space of your Pico board. 4 Mb maximum.
+
+### 2.3. Demonstrate the Trajectory Tracking Robot
+
 
 ### 2.4. (20%) Observe and Analyze
 
