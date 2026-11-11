@@ -32,17 +32,32 @@ Describe how to design the velocity command and the duration for every segment o
 
 ### 2.2. Implement Trajectory Tracking
 - Fill in your planned velocity commands and durations in the [track_traj.py](track_traj.py) script.
-- Run [track_traj.py](track_traj.py) script (on Pico using **MicroPython**) to record the robot's motion data during the tracking.
+- Run [track_traj.py](track_traj.py) script (on Pico using **MicroPython**) to track the trajectory and record the robot's motion data.
 - Upload the data file (saved in Pico as "vel_data.csv") to the [data/](./data/) directory of the assignment repository (locally and on Github).
 - Fill in correct code in [plot_traj.py](plot_traj.py) to estimate robot's pose at every step.
 - Run [plot_traj.py](plot_traj.py) (on a computer using **Local Python**) and upload the figure to the [images/](./images/) directory of the assignment repository.
 
-> [!CAUTION]
-> - No demonstration, no credits. 
+> [!IMPORTANT]
+> - Modify code out of the designated sections is not recommended.
 > - Be ware of the storage space of your Pico board. 4 Mb maximum.
 
 ### 2.3. Demonstrate the Trajectory Tracking Robot
+Demonstrate your robot to Dr. Zhang at the designated course.
+The ending positions of each segment of the trajectory are the checkpoints.
+There are 7 checkpoints because no translations during the 7th (purple) segment.
+Distance from where the robot actually ends the segment to the checkpoint will be measured as $d$ in meters.
+Penalties, $p$, will be taken based on $d$.
 
+```math
+p=
+\begin{cases}
+   0 &\text{, if } d \leq 0.05 \\
+   50 d &\text{, else}
+\end{cases}
+```
+
+> [!CAUTION]
+> - You will need to demonstrate your robot to redeem credits for the plan and the implementation part.
 
 ### 2.4. (20%) Observe and Analyze
 
