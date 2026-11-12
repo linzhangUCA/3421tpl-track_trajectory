@@ -23,8 +23,8 @@ For each segment, you will command the robot using a constant linear velocity ($
 
 ### 2.1. Plan Trajectory Tracking
 Document your calculations for the velocity commands and duration of **each segment** in [README.md](README.md):
-- State the kinematic equations used and show your numerical substitutions to determine the **linear velocity ($v$)** for each segment.
-- State the kinematic equations used and show your numerical substitutions to determine the **angular velocity ($\omega$)** for each segment.
+- State the kinematic equations used and show your numerical substitutions to determine the **linear velocity command ($v$)** for each segment.
+- State the kinematic equations used and show your numerical substitutions to determine the **angular velocity ($\omega$) command** for each segment.
 - State the equations used and show your numerical substitutions to determine the **duration** of each segment.
 
 > [!IMPORTANT]
