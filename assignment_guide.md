@@ -1,81 +1,77 @@
 # Track Robot's Trajectory
 
 ## 1. Overview
-It is important for any mobile robot to move along the pre-planned trajectory while localizie itself.
-In this assignment, you will practice controling the robot's motion by feeding velocity commands to it. 
+For any mobile robot, moving accurately along a pre-planned trajectory while localizing itself is a fundamental capability. 
+In this assignment, you will control a differential-drive robot's motion by sending scheduled linear and angular velocity commands, recording odometry data, and evaluating tracking performance. 
 
 ### Preparation
 1. Set up the differential drive mobile base.
-   1. (Recommended) Install the mobile robot [software stack](https://github.com/linzhangUCA/upython_mobile_robot/tree/main/src/upyton_mobile_robot) .
-   2. Update properties according to your robot's physical setup.
-   3. Tune PID parameters so the robot will quickly and smoothly respond to the velocity commands.
+   1. *(Recommended)* Install the mobile robot [software stack](https://github.com/linzhangUCA/upython_mobile_robot/tree/main/src/upyton_mobile_robot) on Raspberry Pi Pico 2.
+   2. Update the configuration properties to match your robot's physical dimensions.
+   3. Tune the PID parameters so the robot responds quickly and smoothly to velocity commands.
 2. (Optional, [VSCode](https://code.visualstudio.com/) recommended) Configure Python environment for the trajectory plotting code:
-    1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) on your computer.
-    2. Open a terminal/shell in the local assignment repository, then `uv sync` to install dependency Python packages ([Matplotlib](https://matplotlib.org/stable/) and possibly [PyQt6](https://pypi.org/project/PyQt6/)).
-    3. To execute a Python scripts: `uv run <script_name>.py`, e.g. `uv run plot_traj.py`.
+    1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) **on your computer**.
+    2. Open a terminal in your local assignment repository and run `uv sync` to install the required dependencies ([Matplotlib](https://matplotlib.org/stable/) and, if needed, [PyQt6](https://pypi.org/project/PyQt6/)).
+    3. Run Python scripts **on your computer** using `uv run <script_name>.py` (for example, `uv run plot_traj.py`).
 
 ## 2. Requirements
-The robot needs to be automatically tracking the pre-defined trajectory (indicated by the dashed lines) as shown in the figure below.
-The trajectory is broken down into 8 (color-coded) segments.
-In each segment, control the robot's movement by feeding linear and angular velocity command to it for a certain duration.
+Your robot must autonomously track the pre-defined trajectory (indicated by the dashed lines) shown in the figure below. 
+The path is divided into **8 color-coded segments**. 
+For each segment, you will command the robot using a constant linear velocity ($v$), angular velocity ($\omega$) for a duration ($\Delta T$).
 
 ![track_traj](./images/track_traj.png)
 
 ### 2.1. Plan Trajectory Tracking
-Describe how to design the velocity command and the duration for every segment of the track in the [README](README.md). 
-- Identify equations and plug in numbers to plan linear velocity for the robot.
-- Identify equations and plug in numbers to plan angular velocity for the robot.
-- Identify equations and plug in numbers to plan duration of the segment.
+Document your calculations for the velocity commands and duration of **each segment** in [README.md](README.md):
+- State the kinematic equations used and show your numerical substitutions to determine the **linear velocity ($v$)** for each segment.
+- State the kinematic equations used and show your numerical substitutions to determine the **angular velocity ($\omega$)** for each segment.
+- State the equations used and show your numerical substitutions to determine the **duration** of each segment.
 
 > [!IMPORTANT]
-> - The total time of travel needs to be within 60 seconds (excluding the pauses at the checkpoints).
-> - Please consider the physical restrictions of your robot and make reasonable designs.
-> - Please format mathmatical expressions following the [guide](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions).
+> - Total travel time must not exceed **60 seconds** (excluding pauses at checkpoints).
+> - Account for your robot's physical limits (e.g., maximum wheel speed and turning constraints) when selecting velocities.
+> - Format all mathematical expressions using GitHub's [math syntax guide](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions).
 
 ### 2.2. Implement Trajectory Tracking
-- Fill in your planned velocity commands and durations in the [track_traj.py](track_traj.py) script.
-- Run [track_traj.py](track_traj.py) script (on Pico using **MicroPython**) to track the trajectory and record the robot's motion data.
-- Upload the data file (saved in Pico as "vel_data.csv") to the [data/](./data/) directory of the assignment repository (locally and on Github).
-- Fill in correct code in [plot_traj.py](plot_traj.py) to estimate robot's pose at every step.
-- Run [plot_traj.py](plot_traj.py) (on a computer using **Local Python**) to measure the actual trajectory.
-- Upload the trajectory figure to the [images/](./images/) directory of the assignment repository and display it out in the [README](README.md).
+1. Enter your planned velocity commands and segment durations into [track_traj.py](track_traj.py).
+2. Run [track_traj.py](track_traj.py) on the Pico using **MicroPython** to execute the trajectory tracking and log motion data.
+3. Transfer the recorded data file (`vel_data.csv`) from the Pico to the [data/](./data/) directory in your local repository and push it to GitHub.
+4. Complete code in [plot_traj.py](plot_traj.py) to estimate the robot's pose at every time step.
+5. Run [plot_traj.py](plot_traj.py) on your computer using **local Python** to generate the measured trajectory plot.
+6. Save the generated figure in the [images/](./images/) directory, push it to GitHub, and embed it in [README.md](README.md).
 
 > [!IMPORTANT]
-> - Modify code out of the designated sections is not recommended.
-> - Be ware of the storage space of your Pico board. 4 Mb maximum.
+> - Modifying code outside the designated sections is not recommended.
+> - Be mindful of the Pico's flash storage limit (**4 MB** maximum).
 
 ### 2.3. Demonstrate the Trajectory Tracking Robot
-Demonstrate your robot to Dr. Zhang at the designated course.
-The ending positions of each segment of the trajectory are the checkpoints.
-There are 7 checkpoints because no translations during the 7th (purple) segment.
-Distance from where the robot actually ends the segment to the checkpoint will be measured as $d$ in meters.
-Penalties, $p$, will be taken based on $d$.
+Demonstrate your robot to Dr. Zhang on the designated test course:
+The endpoint of each segment serves as a **checkpoint**. There are **7 checkpoints** in total (the 7th purple segment is an in-place rotation with no translation).
+At each checkpoint, the Euclidean distance error $d$ (in meters) between the robot's actual stopping position and the target checkpoint will be measured.
+Grade penalties ($p$) will be deducted based on $d$:
 
 ```math
-p=
+p =
 \begin{cases}
-   0 &\text{, if } d \leq 0.05 \\
-   50 d &\text{, else}
+   0, & \text{if } d \leq 0.05 \\
+   50d, & \text{otherwise}
 \end{cases}
 ```
 
 > [!CAUTION]
-> - You will need to demonstrate your robot to redeem credits for the plan and the implementation part.
+> - You must complete the live demonstration to earn credit for the planning (Section 2.1) and implementation (Section 2.2) portions of the assignment.
 
 ### 2.4. (20%) Evaluate Performance
-Evaluate and compare the measured trajectory to the reference trajectory using the Mean Squared Error (MSE) metric.
-Write code in [compute_mse.py](compute_mse.py) to compute the metric based on your data.
-Upload your code to the assignment repository and report your result in the [README](README.md).
-
+Compare your measured trajectory against the reference trajectory using the Mean Squared Error (MSE) metric:
 ```math
 MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2
 ```
    - $M$ is the total number of steps.
    - $\mathbf{p}_t = [X_t, Y_t, \theta_t]$ is the robot's reference pose vector at instant $t$, where $`t \in \{ 0, 1, 2, \dots, T \}`$.
    - $\hat{\mathbf{p}}_t$ is the robot's measured pose vector at instant $t$.
-> [!TIP]
-> - Write code to calculate the MSE.
 
+1. Implement the MSE calculation in [compute_mse.py](compute_mse.py) using your recorded data.
+2. Push your completed script to the assignment repository and report your computed MSE results in [README.md](README.md).
 
 ### 2.5. Acknowledge AI's Contributions
 If AI helped with this assignment, please list out all the contributions from it.
