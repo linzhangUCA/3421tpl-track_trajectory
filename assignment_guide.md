@@ -18,7 +18,6 @@ In this assignment, you will practice controling the robot's motion by feeding v
 The robot needs to be automatically tracking the pre-defined trajectory (indicated by the dashed lines) as shown in the figure below.
 The trajectory is broken down into 8 (color-coded) segments.
 In each segment, control the robot's movement by feeding linear and angular velocity command to it for a certain duration.
-The total time for tracking needs to be restricted within 60 seconds (excluding the pauses at the checkpoints). 
 
 ![track_traj](./images/track_traj.png)
 
@@ -29,7 +28,9 @@ Describe how to design the velocity command and the duration for every segment o
 - Identify equations and plug in numbers to plan duration of the segment.
 
 > [!IMPORTANT]
-> Please format mathmatical expressions following the [guide](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions). 
+> - The total time of travel needs to be within 60 seconds (excluding the pauses at the checkpoints).
+> - Please consider the physical restrictions of your robot and make reasonable designs.
+> - Please format mathmatical expressions following the [guide](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions).
 
 ### 2.2. Implement Trajectory Tracking
 - Fill in your planned velocity commands and durations in the [track_traj.py](track_traj.py) script.
