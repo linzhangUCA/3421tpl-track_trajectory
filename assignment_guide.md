@@ -17,7 +17,7 @@ In this assignment, you will control a differential-drive robot's motion by send
 ## 2. Requirements
 Your robot must autonomously track the pre-defined trajectory (indicated by the dashed lines) shown in the figure below. 
 The path is divided into **8 color-coded segments**. 
-For each segment, you will command the robot using a constant linear velocity ($v$), angular velocity ($\omega$) for a duration ($\Delta T$).
+For each segment, you will command the robot using a constant linear velocity ($v$) and angular velocity ($\omega$) for a fixed duration ($\Delta T$).
 
 ![track_traj](./images/track_traj.png)
 
