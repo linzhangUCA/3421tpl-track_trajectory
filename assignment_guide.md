@@ -6,7 +6,7 @@ In this assignment, you will control a differential-drive robot's motion by send
 
 ### Preparation
 1. Set up the differential drive mobile base.
-   1. *(Recommended)* Install the mobile robot [software stack](https://github.com/linzhangUCA/upython_mobile_robot/tree/main/src/upyton_mobile_robot) on Raspberry Pi Pico 2.
+   1. *(Recommended)* Install the differential drive [software stack](https://github.com/linzhangUCA/3421example-differential_drive_controller) on Raspberry Pi Pico 2.
    2. Update the configuration properties to match your robot's physical dimensions.
    3. Tune the PID parameters so the robot responds quickly and smoothly to velocity commands.
 2. (Optional, [VSCode](https://code.visualstudio.com/) recommended) Configure Python environment for the trajectory plotting code:
