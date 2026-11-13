@@ -21,18 +21,18 @@ For each segment, you will command the robot using a constant linear velocity ($
 
 ![track_traj](./images/track_traj.png)
 
-### 2.1. Plan Trajectory Tracking
+### 2.1. (60%) Plan Trajectory Tracking
 Document your calculations for the velocity commands and duration of **each segment** in [README.md](README.md):
 - State the kinematic equations used and show your numerical substitutions to determine the **linear velocity command ($v$)** for each segment.
 - State the kinematic equations used and show your numerical substitutions to determine the **angular velocity ($\omega$) command** for each segment.
 - State the equations used and show your numerical substitutions to determine the **duration** of each segment.
 
 > [!IMPORTANT]
-> - Total travel time must not exceed **60 seconds** (excluding pauses at checkpoints).
+> - Total travel time must not exceed **20 seconds** (excluding pauses at checkpoints).
 > - Account for your robot's physical limits (e.g., maximum wheel speed and turning constraints) when selecting velocities.
 > - Format all mathematical expressions using GitHub's [math syntax guide](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions).
 
-### 2.2. Implement Trajectory Tracking
+### 2.2. (40%) Implement Trajectory Tracking
 1. Enter your planned velocity commands and segment durations into [track_traj.py](track_traj.py).
 2. Run [track_traj.py](track_traj.py) on the Pico using **MicroPython** to execute the trajectory tracking and log motion data.
 3. Transfer the recorded data file (`vel_data.csv`) from the Pico to the [data/](./data/) directory in your local repository and push it to GitHub.
