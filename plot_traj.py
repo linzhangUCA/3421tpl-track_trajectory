@@ -2,54 +2,42 @@
 Run this script with Local Python
 """
 
-from pathlib import Path
 import csv
+from math import cos, pi, sin
+from pathlib import Path
+
 import matplotlib.pyplot as plt
-from math import pi, sin, cos
+import numpy as np
 
 # SETUP, prepare data
-data_filename = "example_data-lifted.csv"
-data_type = "lifted" if "lifted" in data_filename else "ground"
+data_dir = Path(__file__).parent / "data"
+data_path = data_dir / "vel_data.csv"
 
-data_file = Path(__file__).parent / "data" / data_filename
-with open(data_file, newline="") as f:
+with open(data_path, newline="") as f:
     data = csv.reader(f)
     meas_vel_data = tuple(data)
 print(f"There are {len(meas_vel_data)} velocity samples recorded")
-meas_lin_vels, meas_ang_vels = [], []  # initialize lists to save measured velocities
+meas_ang_vels, meas_lin_vels = [], []  # initialize lists to save measured velocities
 for mv in meas_vel_data:
-    meas_lin_vels.append((float(mv[0])))
-    meas_ang_vels.append((float(mv[1])))
-# Construct reference velocity list
-ref_vel_candidates = (
-    (0.4, 0.0),
-    (0.3, pi / 3),
-    (0.25, pi / 2),
-    (0.0, 2 * pi / 3),
-    (-0.25, pi / 2),
-    (-0.3, pi / 3),
-    (-0.4, 0.0),
-    (-0.3, -pi / 3),
-    (-0.25, -pi / 2),
-    (0.0, -2 * pi / 3),
-)
-num_per_cand = len(meas_vel_data) // len(ref_vel_candidates)  # numbers per candidate
-ref_lin_vels, ref_ang_vels = [], []
-for i in range(len(meas_vel_data)):
-    ref_lin_vels.append(ref_vel_candidates[i // num_per_cand][0])
-    ref_ang_vels.append(ref_vel_candidates[i // num_per_cand][1])
-print(f"10 samples of reference linear velocity: {ref_lin_vels[50:60]}")
-print(f"10 samples of measured linear velocity: {meas_lin_vels[50:60]}")
-print(f"10 samples of reference angular velocity: {ref_ang_vels[50:60]}")
-print(f"10 samples of measured angular velocity: {meas_ang_vels[50:60]}")
+    meas_ang_vels.append((float(mv[0])))
+    meas_lin_vels.append((float(mv[1])))
+# TODO: reconstruct reference velocity list
+# cmd_vels = (
+#     (0.0, 0.0, 2),
+#     (pi / 2, 0.2, 3),
+#     ...
+# )
 
 
-def update_pose(x, y, theta, lin_vel, ang_vel, dt):
+def estimate_pose(x, y, theta, ang_vel, lin_vel, dt=0.05):
     """Compute robot's new pose given its old pose and velocity
     Args:
         x: robot's old X coordinate (under the global frame)
         y: robot's old Y coordinate (under the global frame)
         theta: robot's old orientation (angle between global frame's X-axis and body frame's x-axis)
+        ang_vel: robot's angular velocity (in the body frame)
+        lin_vel: robot's linear velocity (in the body frame)
+        dt: time interval (in seconds)
     Returns:
         next_x: robot's new X coordinate (under the global frame)
         next_y: robot's new Y coordinate (under the global frame)
@@ -74,87 +62,77 @@ def update_pose(x, y, theta, lin_vel, ang_vel, dt):
 
 
 # LOOP, calculate trajectory
-ref_poses = [(0, 0, 0)]  # initialize list to store poses
-meas_poses = [(0, 0, 0)]
+est_poses = [(0, 0, 0)]
 dt = 0.05  # seconds, comply to data collection
 
 for i in range(len(meas_vel_data) - 1):
-    # Compute new pose using reference velocity
-    ref_x, ref_y, ref_th = (
-        ref_poses[-1][0],
-        ref_poses[-1][1],
-        ref_poses[-1][2],
-    )  # extract latest coordinates
-    ref_lv, ref_av = (
-        ref_lin_vels[i],
-        ref_ang_vels[i],
-    )  # extract linear and angular velocity
-    ref_nx, ref_ny, ref_nth = update_pose(
-        ref_x, ref_y, ref_th, ref_lv, ref_av, dt
-    )  # compute new pose
-    ref_poses.append((ref_nx, ref_ny, ref_nth))  # store new pose
     ### START CODING HERE ###
-    # Compute new pose using measured velocity
-    meas_x, meas_y, meas_th = None, None, None
-    meas_lv, meas_av = None, None
+    old_x, old_y, old_th = (
+        None,
+        None,
+        None,
+    )  # extract old coordinates from est_poses
+    meas_ang_vel, meas_lin_vel = (
+        None,
+        None,
+    )  # extract measured angular and linear velocity
     ### END CODING HERE ###
-    meas_nx, meas_ny, meas_nth = update_pose(
-        meas_x, meas_y, meas_th, meas_lv, meas_av, dt
+    new_x, new_y, new_th = estimate_pose(
+        old_x, old_y, old_th, meas_ang_vel, meas_lin_vel, dt
     )
-    meas_poses.append((meas_nx, meas_ny, meas_nth))  # store new pose
+    est_poses.append((new_x, new_y, new_th))  # store new pose
 
-# EVALUATION
-pose_errors = []
-for i in range(len(ref_poses)):
-    pose_errors.append(
-        (ref_poses[i][0] - meas_poses[i][0]) ** 2
-        + (ref_poses[i][1] - meas_poses[i][1]) ** 2
-        + (ref_poses[i][2] - meas_poses[i][2]) ** 2
-    )
-mse = sum(pose_errors) / len(pose_errors)
-print(f"Mean squared error: {sum(pose_errors) / len(pose_errors)}")
 
-# PLOT
+# Pre-defined traj
+def arc_points(center, radius, start_deg, end_deg, num=50):
+    theta = np.deg2rad(np.linspace(start_deg, end_deg, num))
+    x = center[0] + radius * np.cos(theta)
+    y = center[1] + radius * np.sin(theta)
+    return np.column_stack([x, y])
+
+
+segments = [
+    np.array([[0.0, 0.0], [0.4, 0.0]]),
+    arc_points(center=(0.4, -0.2), radius=0.2, start_deg=90, end_deg=0),
+    np.array([[0.6, -0.2], [0.6, -0.44]]),
+    arc_points(center=(0.4, -0.44), radius=0.2, start_deg=0, end_deg=-90),
+    arc_points(center=(0.4, -0.54), radius=0.1, start_deg=-90, end_deg=-180),
+    np.array([[0.3, -0.54], [0.3, -0.2]]),
+    np.array([[0.3, -0.2], [0.0, -0.5]]),
+]
+predef_path = np.vstack(segments)
+
+
+# Estimated traj
+est_x, est_y, est_th = map(list, zip(*est_poses))
+est_u = [cos(mth) for mth in est_th]
+est_v = [sin(mth) for mth in est_th]
+
+
+# Plot
 fig, ax = plt.subplots(1, 1, figsize=(12, 12))
-ref_x, ref_y, ref_th = map(list, zip(*ref_poses))
-ref_u = [cos(rth) for rth in ref_th]
-ref_v = [sin(rth) for rth in ref_th]
-meas_x, meas_y, meas_th = map(list, zip(*meas_poses))
-meas_u = [cos(mth) for mth in meas_th]
-meas_v = [sin(mth) for mth in meas_th]
-
+ax.plot(predef_path[:, 0], predef_path[:, 1], color="royalblue", linewidth=1)
 ax.quiver(
-    ref_x,
-    ref_y,
-    ref_u,
-    ref_v,
-    color="#7C878E",  # Arrow color
-    label="Orientation",
-    angles="xy",  # Interpret (u, v) as (dx, dy)
-    units="xy",
-    scale=20,
-    scale_units="width",
-    width=0.003,
-)
-ax.quiver(
-    meas_x,
-    meas_y,
-    meas_u,
-    meas_v,
+    est_x,
+    est_y,
+    est_u,
+    est_v,
     color="#582c83",  # Arrow color
     label="Orientation",
     angles="xy",  # Interpret (u, v) as (dx, dy)
     units="xy",
     scale=20,
     scale_units="width",
-    width=0.003,
+    width=0.002,
 )
 ax.set_xlabel("X (m)")
 ax.set_ylabel("Y (m)")
-# ax.set_xlim(-0.1, 1.2)
-# ax.set_ylim(-1.1, 0.8)
-ax.grid()
+ax.set_aspect("equal", adjustable="box")  # 1:1 scale
+ax.set_xlim(-0.1, 0.7)
+ax.set_ylim(-0.75, 0.1)
+ax.grid(True, linestyle="--", alpha=0.5)
+
 ax.legend(["reference", "measured"])
-ax.set_title(f"Trajectory Comparison - {data_type}", fontsize=16)
-plt.savefig(f"{data_type}_traj.png")  # Export figure
+ax.set_title("Measured Trajectory", fontsize=16)
+# plt.savefig(f"traj_plot.png")  # uncomment to save figure
 plt.show()
