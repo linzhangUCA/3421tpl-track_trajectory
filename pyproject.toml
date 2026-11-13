@@ -1,7 +1,7 @@
 [project]
 name = "traj"
 version = "0.1.0"
-description = "Add your description here"
+description = "Track pre-defined trajectory."
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 dependencies = ["matplotlib>=3.10.7", "pyqt6>=6.10.0"]
