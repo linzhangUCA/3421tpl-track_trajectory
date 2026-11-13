@@ -61,8 +61,8 @@ p =
 > [!CAUTION]
 > - You must complete the live demonstration to earn credit for the planning (Section 2.1) and implementation (Section 2.2) portions of the assignment.
 
-### 2.4. (20%) Evaluate Performance
-Compare your measured trajectory against the reference trajectory using the Mean Squared Error (MSE) metric:
+### 2.4. (Bonus +20%) Evaluate Performance
+Compare trajectory estimated from measured velocities against the one estimated from planned velocities using the Mean Squared Error (MSE) metric:
 ```math
 MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2
 ```
@@ -72,6 +72,9 @@ MSE = \frac{1}{M} \sum_{t=0}^T (\mathbf{p}_t - \hat{\mathbf{p}}_t)^2
 
 1. Implement the MSE calculation in [compute_mse.py](compute_mse.py) using your recorded data.
 2. Push your completed script to the assignment repository and report your computed MSE results in [README.md](README.md).
+
+> [!TIP]
+> You'll need to reconstruct both trajectories using different sources of velocity values.
 
 ### 2.5. Acknowledge AI's Contributions
 If AI helped with this assignment, please list out all the contributions from it.
